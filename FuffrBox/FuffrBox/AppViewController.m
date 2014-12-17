@@ -406,6 +406,49 @@ static void CreateSwipeGesture(
 @end
 
 
+/*********** Class TapToShowNavBarView ***********/
+
+@interface TapToShowNavBarView : UIView
+
+@end
+
+@implementation TapToShowNavBarView
+
+- (id)initWithFrame:(CGRect)frame
+{
+	self = [super initWithFrame: frame];
+	if (self)
+	{
+		self.multipleTouchEnabled = YES;
+		[self setBackgroundColor:[UIColor redColor]];
+	}
+
+	return self;
+}
+
+- (void) touchesBegan: (NSSet *)touches withEvent: (UIEvent *)event
+{
+    NSLog(@"touchesBegan");
+}
+
+- (void) touchesMoved: (NSSet *)touches withEvent: (UIEvent *)event
+{
+    NSLog(@"touchesMoved");
+}
+
+- (void) touchesEnded: (NSSet *)touches withEvent: (UIEvent *)event
+{
+    NSLog(@"touchesEnded");
+}
+
+- (void) touchesCancelled: (NSSet *)touches withEvent: (UIEvent *)event
+{
+    NSLog(@"touchesCancelled");
+}
+
+@end
+
+
 /*********** Class FuffrBoxView ***********/
 
 @interface FuffrBoxView : UIView
@@ -421,6 +464,8 @@ static void CreateSwipeGesture(
 
 /** The Go button. */
 @property UIButton* buttonGo;
+
+@property TapToShowNavBarView* tapBarView;
 
 @end
 
@@ -470,6 +515,9 @@ static void CreateSwipeGesture(
 	self.webView.scrollView.bounces = NO;
 	[self.webView setBackgroundColor:[UIColor whiteColor]];
     [self addSubview: self.webView];
+
+	self.tapBarView = [[TapToShowNavBarView alloc] initWithFrame: CGRectZero];
+    [self addSubview: self.tapBarView];
 }
 
 - (void) layoutSubviews
@@ -489,6 +537,11 @@ static void CreateSwipeGesture(
 	bounds.size.width = viewBounds.size.width - 90;
 	[self.urlField setFrame: bounds];
 
+	// Size tap bar.
+	bounds = CGRectMake(50, toolbarOffsetY + 1, 0, toolbarHeight);
+	bounds.size.width = viewBounds.size.width - 90;
+	[self.tapBarView setFrame: bounds];
+
 	// Size Go button.
 	bounds = CGRectMake(0, toolbarOffsetY, 40, toolbarHeight);
 	bounds.origin.x = viewBounds.size.width - 40;
@@ -501,7 +554,6 @@ static void CreateSwipeGesture(
 	bounds.origin.y = toolbarHeight;
 	bounds.size.height -= bounds.origin.y;
 	[self.webView setFrame: bounds];
-
 }
 
 @end
